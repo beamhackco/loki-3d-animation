@@ -1,0 +1,15 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# Hashed file names: safe to cache forever.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Same name across releases: short cache, then refresh in the background.
+/loki-title.webp
+  Cache-Control: public, max-age=3600, stale-while-revalidate=604800
+
+/fallback.webp
+  Cache-Control: public, max-age=3600, stale-while-revalidate=604800

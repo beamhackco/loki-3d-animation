@@ -2,10 +2,14 @@
   "name": "dark-fantasy-3d",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=22.12"
+  },
   "scripts": {
     "dev": "next dev --port 3210",
     "build": "next build",
-    "start": "next start --port 3210",
+    "preview": "npm run build && npx wrangler@4 pages dev --port 3212",
+    "deploy": "npm run build && npx wrangler@4 pages deploy",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

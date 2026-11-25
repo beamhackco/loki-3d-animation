@@ -7,8 +7,31 @@ A scroll-driven, real-time 3D scene built with Next.js, React Three Fiber and cu
 ```
 npm install
 npm run dev      # http://localhost:3210
-npm run build && npm start
+npm run preview  # production build in Cloudflare's local runtime, http://localhost:3212
 ```
+
+## Deploy to Cloudflare Pages
+
+The build is a static export: `npm run build` writes plain files to `out/`. There is no server code and no environment variables.
+
+**From this computer.** The first run opens a browser to sign in to Cloudflare, and asks to create the project.
+
+```
+npx wrangler@4 login
+npm run deploy
+```
+
+**From GitHub.** In the Cloudflare dashboard, create a Pages project from the repository with these settings:
+
+| Setting | Value |
+| --- | --- |
+| Production branch | `main` |
+| Framework preset | None |
+| Build command | `npm run build` |
+| Build output directory | `out` |
+| Root directory | leave empty |
+
+The Node version comes from `.node-version`. The project name is in `wrangler.toml`, caching is in `public/_headers`, and unknown addresses get `src/app/not-found.tsx`.
 
 ## How it matches the reference
 
