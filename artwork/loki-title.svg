@@ -1,0 +1,273 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="52 34 882 272" width="882" height="272">
+  <!-- Each letter is drawn in its own enlarged grid; the group transform places it. -->
+  <defs>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.075" numOctaves="4" seed="4" />
+      <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.9 0 0 0 -0.82" />
+    </filter>
+    <filter id="grainLight" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="4" seed="21" />
+      <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  1.7 0 0 0 -0.8" />
+    </filter>
+    <filter id="cloudWarm" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0046 0.0056" numOctaves="5" seed="13" color-interpolation-filters="sRGB" />
+      <feColorMatrix color-interpolation-filters="sRGB" values="0 0 0 0 0.57  0 0 0 0 0.545  0 0 0 0 0.46  5.2 0 0 0 -2.35" />
+    </filter>
+    <filter id="cloudCool" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.005 0.0042" numOctaves="4" seed="52" color-interpolation-filters="sRGB" />
+      <feColorMatrix color-interpolation-filters="sRGB" values="0 0 0 0 0.86  0 0 0 0 0.885  0 0 0 0 0.9  5 0 0 0 -2.3" />
+    </filter>
+    <filter id="vein" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="turbulence" baseFrequency="0.016" numOctaves="5" seed="8" />
+      <feColorMatrix values="0 0 0 0 0.4  0 0 0 0 0.385  0 0 0 0 0.34  -5 0 0 0 1.0" />
+    </filter>
+    <filter id="brushed" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.006 0.16" numOctaves="3" seed="5" />
+      <feColorMatrix values="0 0 0 0 0.16  0 0 0 0 0.08  0 0 0 0 0.02  1.2 0 0 0 -0.5" />
+    </filter>
+    <filter id="tarnish" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.013" numOctaves="4" seed="29" />
+      <feColorMatrix values="0 0 0 0 0.2  0 0 0 0 0.12  0 0 0 0 0.05  2.6 0 0 0 -1.42" />
+    </filter>
+    <filter id="grainV" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.13 0.005" numOctaves="3" seed="11" />
+      <feColorMatrix values="0 0 0 0 0  0 0 0 0 0.1  0 0 0 0 0.02  1.5 0 0 0 -0.62" />
+    </filter>
+    <filter id="soft6" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="6" /></filter>
+    <filter id="soft14" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14" /></filter>
+    <filter id="soft30" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="30" /></filter>
+    <filter id="drop" x="-10%" y="-20%" width="120%" height="140%">
+      <feGaussianBlur stdDeviation="4.5" />
+    </filter>
+
+    <!-- L -->
+    <linearGradient id="lFace" x1="0" y1="0" x2="0.25" y2="1">
+      <stop offset="0" stop-color="#b9c1c8" />
+      <stop offset="0.3" stop-color="#c6ced4" />
+      <stop offset="0.6" stop-color="#9aa5ab" />
+      <stop offset="1" stop-color="#c2cccf" />
+    </linearGradient>
+    <linearGradient id="lSide" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#858489" />
+      <stop offset="0.25" stop-color="#777479" />
+      <stop offset="0.5" stop-color="#80868a" />
+      <stop offset="1" stop-color="#949a9f" />
+    </linearGradient>
+    <linearGradient id="lEnd" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d6dadb" />
+      <stop offset="1" stop-color="#8f9698" />
+    </linearGradient>
+    <path id="lOuter" d="M57 50 H323 L387 75 V735 Q390 768 420 780 H922 L768 1005 L720 1021 H205 Q57 985 57 850 Z" />
+    <path id="lPlate" d="M57 50 H320 V720 Q324 764 355 783 L420 788 H876 L718 1021 H205 Q57 985 57 850 Z" />
+    <path id="lInner" d="M72 72 H284 V715 Q290 800 372 811 H824 L692 997 H222 Q72 960 72 848 Z" />
+    <clipPath id="lInnerClip"><use href="#lInner" /></clipPath>
+    <clipPath id="lPlateClip"><use href="#lPlate" /></clipPath>
+
+    <!-- O -->
+    <linearGradient id="oFace" x1="0.12" y1="0.62" x2="0.95" y2="0.36">
+      <stop offset="0" stop-color="#593c1b" />
+      <stop offset="0.28" stop-color="#7d5526" />
+      <stop offset="0.52" stop-color="#a06c33" />
+      <stop offset="0.78" stop-color="#d8964a" />
+      <stop offset="1" stop-color="#f8bf6c" />
+    </linearGradient>
+    <linearGradient id="oSide" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a3115" />
+      <stop offset="0.5" stop-color="#6a4a22" />
+      <stop offset="1" stop-color="#3a260f" />
+    </linearGradient>
+    <linearGradient id="oStem" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#9d6f36" />
+      <stop offset="0.35" stop-color="#bb8745" />
+      <stop offset="0.6" stop-color="#9a6c34" />
+      <stop offset="1" stop-color="#6e4f27" />
+    </linearGradient>
+    <linearGradient id="oArc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8a5e2c" />
+      <stop offset="0.45" stop-color="#eab66c" />
+      <stop offset="1" stop-color="#ffd78f" />
+    </linearGradient>
+    <path id="oOuter" d="M545 38 C640 52 760 95 870 165 C930 205 965 240 987 275 L980 287 C1000 330 1007 380 1005 432 C1003 490 996 530 985 560 C965 635 935 690 900 732 L776 826 L777 840 L590 945 Q520 975 455 979 Q340 980 270 940 Q180 890 118 822 L128 806 L66 690 L48 696 C38 640 35 600 38 552 C40 470 60 390 95 322 L330 186 Z" />
+    <path id="oFront" d="M545 38 C650 66 770 118 862 182 C920 226 958 272 976 318 C998 350 1006 390 1005 432 C1003 490 996 530 985 560 C965 635 935 690 900 732 C860 770 820 800 776 828 Q700 878 560 936 Q500 958 430 960 Q330 960 250 912 Q180 876 122 820 L132 802 Q96 748 70 690 L50 692 C40 640 37 600 40 552 C42 470 62 390 97 324 L330 188 Z" />
+    <path id="oH1" d="M296 250 C210 318 150 410 150 502 C152 600 204 692 262 755 L294 700 Z" />
+    <path id="oH2" d="M410 178 H499 V862 C405 842 335 805 274 758 L404 628 L410 600 Z" />
+    <path id="oH3" d="M517 186 C640 192 772 254 858 350 C780 430 628 440 536 364 L517 345 Z" />
+    <path id="oH4" d="M517 362 C600 458 780 462 864 356 C888 400 896 470 886 540 Q880 580 868 612 C800 505 640 498 556 592 L517 640 Z" />
+    <path id="oH5" d="M517 662 L552 628 C630 530 780 525 866 618 C840 700 770 775 690 808 Q600 850 517 862 Z" />
+    <clipPath id="oFrontClip"><use href="#oFront" /></clipPath>
+
+    <!-- K -->
+    <linearGradient id="kEdge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6f7071" />
+      <stop offset="0.4" stop-color="#4c4d4d" />
+      <stop offset="1" stop-color="#5d5d5c" />
+    </linearGradient>
+    <linearGradient id="kSide" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7d7e7f" />
+      <stop offset="0.5" stop-color="#8d8e8e" />
+      <stop offset="1" stop-color="#4a4a4a" />
+    </linearGradient>
+    <linearGradient id="kHook" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3a3a3a" />
+      <stop offset="0.55" stop-color="#8b8b8b" />
+      <stop offset="1" stop-color="#b4b4b2" />
+    </linearGradient>
+    <path id="kOuter" d="M412 30 H728 L541 356 L855 86 L920 30 H1026 L672 303 H941 C872 378 822 462 826 542 C836 602 872 634 922 634 C992 630 1042 588 1060 540 L1058 580 C1020 695 896 782 740 782 C602 782 458 690 456 532 L342 769 H20 Z" />
+    <path id="kFace" d="M420 47 H700 L612 206 L527 374 L552 398 L580 374 L668 318 H905 C850 385 818 470 822 546 C832 606 872 646 926 646 C976 642 1012 620 1050 568 C1012 690 884 765 740 765 C610 765 504 690 503 552 C504 520 514 494 523 471 C518 446 490 444 477 470 L332 750 H52 Z" />
+    <path id="kArm" d="M928 47 H980 L672 314 L644 330 Z" />
+    <clipPath id="kFaceClip"><use href="#kFace" /></clipPath>
+
+    <!-- I -->
+    <linearGradient id="iRim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6d9470" />
+      <stop offset="0.3" stop-color="#4d7552" />
+      <stop offset="0.7" stop-color="#41704a" />
+      <stop offset="1" stop-color="#7fb183" />
+    </linearGradient>
+    <linearGradient id="iBevel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#14471a" />
+      <stop offset="0.35" stop-color="#07300c" />
+      <stop offset="0.7" stop-color="#0c3d12" />
+      <stop offset="1" stop-color="#155a1e" />
+    </linearGradient>
+    <linearGradient id="iFace" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5f9a63" />
+      <stop offset="0.28" stop-color="#4b7d4e" />
+      <stop offset="1" stop-color="#50875a" />
+    </linearGradient>
+    <path id="iOuter" d="M95 47 C135 52 170 82 203 110 C245 62 325 32 412 39 L414 66 L405 90 Q392 108 362 110 C330 138 318 168 318 206 V818 L346 843 L380 820 L404 834 L441 885 L276 1006 H245 C200 940 150 908 90 896 L33 876 V840 L75 800 V202 C75 165 50 136 17 119 Z" />
+    <path id="iDark" d="M112 52 L56 104 C92 130 112 166 112 206 V804 L72 844 V880 C150 890 218 926 275 1001 L291 964 L366 902 L404 866 V838 L366 872 L304 842 V200 C306 140 342 92 408 66 L410 46 C330 40 262 74 218 152 C190 112 156 78 112 52 Z" />
+    <path id="iFacePath" d="M102 95 C134 122 145 162 145 206 V812 L104 852 C182 866 246 906 291 964 L412 880 L402 872 L366 902 L304 842 V200 C306 140 342 92 408 66 C322 66 250 112 222 186 C196 140 152 106 102 95 Z" />
+    <clipPath id="iFaceClip"><use href="#iFacePath" /></clipPath>
+  </defs>
+
+  <!-- Soft ground shadow so the letters sit in the scene -->
+  <g fill="#020803" opacity="0.75" filter="url(#drop)">
+    <g transform="translate(51 43) scale(0.25)"><use href="#lOuter" /></g>
+    <g transform="translate(271 48) scale(0.25)"><use href="#oOuter" /></g>
+    <g transform="translate(481 38) scale(0.33333)"><use href="#kOuter" /></g>
+    <g transform="translate(816 43) scale(0.25)"><use href="#iOuter" /></g>
+  </g>
+
+  <!-- L: brushed steel -->
+  <g transform="translate(50 40) scale(0.25)">
+    <use href="#lOuter" fill="url(#lSide)" />
+    <path d="M876 782 L922 780 L768 1005 L718 1021 Z" fill="url(#lEnd)" />
+    <use href="#lPlate" fill="#6d7374" />
+    <g clip-path="url(#lPlateClip)">
+      <rect width="960" height="1060" filter="url(#grain)" opacity="0.55" />
+      <path d="M57 50 V850 Q57 985 205 1021" fill="none" stroke="#a3a9ab" stroke-width="22" />
+      <path d="M57 50 H320" stroke="#83888a" stroke-width="24" />
+    </g>
+    <path d="M287 70 V720" stroke="#2c3030" stroke-width="5" opacity="0.55" />
+    <path d="M321 52 V722 Q326 762 354 782" fill="none" stroke="#a5a5a9" stroke-width="3.5" />
+    <use href="#lInner" fill="url(#lFace)" />
+    <g clip-path="url(#lInnerClip)">
+      <mask id="lPatch"><path d="M30 620 C120 585 180 560 300 478 V760 C340 800 400 800 470 806 C400 860 330 900 250 1020 H30 Z" fill="#fff" filter="url(#soft14)" /></mask>
+      <g mask="url(#lPatch)">
+        <rect x="40" y="440" width="480" height="600" fill="#575e5b" />
+        <rect x="40" y="440" width="480" height="600" filter="url(#grain)" opacity="0.5" />
+        <rect x="40" y="440" width="480" height="600" filter="url(#grainLight)" opacity="0.28" />
+      </g>
+      <path d="M60 60 H300 V200 H60 Z" fill="#8f9aa3" opacity="0.35" filter="url(#soft30)" />
+      <path d="M420 900 L830 800 V1000 H420 Z" fill="#dfe7e8" opacity="0.35" filter="url(#soft30)" />
+      <rect x="60" y="60" width="800" height="960" filter="url(#brushed)" opacity="0.08" />
+    </g>
+    <path d="M292 120 q14 30 2 60 M300 270 q10 60 -4 110 M296 400 q12 40 4 70" fill="none" stroke="#232727" stroke-width="10" opacity="0.5" filter="url(#soft6)" />
+    <path d="M420 781 H921" stroke="#f4f7f7" stroke-width="5" />
+    <path d="M57 50 H323" stroke="#b9bec0" stroke-width="4" />
+  </g>
+
+  <!-- O: copper blackletter -->
+  <g transform="translate(270 45) scale(0.25)">
+    <use href="#oOuter" fill="url(#oSide)" />
+    <use href="#oFront" fill="url(#oFace)" />
+    <g clip-path="url(#oFrontClip)">
+      <ellipse cx="600" cy="110" rx="190" ry="70" fill="#c49052" opacity="0.55" filter="url(#soft30)" />
+      <ellipse cx="960" cy="470" rx="110" ry="260" fill="#ffcf85" opacity="0.45" filter="url(#soft30)" />
+      <ellipse cx="620" cy="900" rx="150" ry="60" fill="#e0a75e" opacity="0.5" filter="url(#soft30)" />
+      <ellipse cx="150" cy="740" rx="170" ry="130" fill="#573c1b" opacity="0.5" filter="url(#soft30)" />
+      <ellipse cx="240" cy="290" rx="220" ry="110" fill="#5c3e1b" opacity="0.5" filter="url(#soft30)" />
+      <g transform="rotate(-32 520 510)"><rect x="-200" y="-200" width="1500" height="1500" filter="url(#brushed)" opacity="0.2" /></g>
+      <rect width="1040" height="1020" filter="url(#tarnish)" opacity="0.5" />
+    </g>
+    <path d="M97 324 L330 188 L545 38 C650 66 770 118 862 182" fill="none" stroke="#e8bd7c" stroke-width="3" opacity="0.55" />
+    <!-- counters -->
+    <g fill="#070502" fill-opacity="0.93" stroke="#3d2710" stroke-width="10" stroke-linejoin="round">
+      <use href="#oH1" /><use href="#oH2" /><use href="#oH3" /><use href="#oH4" /><use href="#oH5" />
+    </g>
+    <path d="M499 180 V860" stroke="#2a1a09" stroke-width="16" opacity="0.8" />
+    <!-- lower lip of each cut -->
+    <path d="M262 755 C204 692 152 600 150 502 C150 410 210 318 296 250" fill="none" stroke="#24170a" stroke-width="18" opacity="0.8" />
+    <path d="M410 178 V600 L404 628 L274 758" fill="none" stroke="#573a1a" stroke-width="20" opacity="0.75" />
+    <path d="M410 178 H499" stroke="#6b4a22" stroke-width="22" opacity="0.8" />
+    <!-- stem, hairline bar, crescents -->
+    <path d="M296 250 L410 178 V600 L404 628 L262 757 L294 700 Z" fill="url(#oStem)" />
+    <path d="M500 176 H517 V862 H498 Z" fill="url(#oArc)" />
+    <path d="M517 345 L536 362 C628 436 780 428 862 350 C790 462 610 466 520 372 Z" fill="url(#oArc)" />
+    <path d="M517 640 L556 590 C640 496 800 500 868 612 C796 528 660 520 572 592 L517 660 Z" fill="url(#oArc)" />
+    <path d="M517 648 L548 606 Q600 560 640 548 L600 578 L520 662 Z" fill="#5a3c1a" opacity="0.75" />
+    <!-- far edges catching light through the cuts -->
+    <g fill="none" stroke="#cfcac2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M273 304 C165 408 150 590 260 717" stroke-width="10" />
+      <path d="M273 304 C170 404 152 590 258 715" stroke-width="4" stroke="#f1eee8" />
+      <path d="M482 204 H440 V610 Q438 630 425 645 L308 760 C360 806 420 830 477 833" stroke-width="4.5" />
+      <path d="M545 342 V215 C650 215 760 270 820 344" stroke-width="4.5" />
+      <path d="M551 416 V563" stroke-width="6" opacity="0.8" />
+      <path d="M606 449 C680 474 792 466 855 399" stroke-width="5" opacity="0.8" />
+      <path d="M660 808 C625 824 584 832 548 832 V643 C600 582 670 556 740 562" stroke-width="4.5" />
+    </g>
+    <path d="M900 732 C860 770 820 800 776 828" fill="none" stroke="#ffe0a4" stroke-width="4" opacity="0.6" />
+  </g>
+
+  <!-- K: weathered marble -->
+  <g transform="translate(480 35) scale(0.33333)">
+    <use href="#kOuter" fill="url(#kEdge)" />
+    <path d="M541 356 L855 86 L920 30 L884 78 L566 360 L545 372 Z" fill="url(#kSide)" />
+    <path d="M566 360 L884 78 L922 46 L930 50 L646 328 L600 356 L556 388 Z" fill="#2f2f2e" />
+    <path d="M456 532 C458 690 602 782 700 780 C580 750 500 660 480 540 L478 472 Z" fill="url(#kSide)" />
+    <path d="M876 612 C925 602 962 572 973 532 H1062 C1044 598 984 640 910 634 Z" fill="url(#kHook)" />
+    <rect x="20" y="30" width="1040" height="755" filter="url(#grain)" opacity="0.4" clip-path="url(#kOuterClip)" />
+    <clipPath id="kOuterClip"><use href="#kOuter" /></clipPath>
+    <use href="#kFace" fill="#c2c1b5" />
+    <g clip-path="url(#kFaceClip)">
+      <rect width="1110" height="810" filter="url(#cloudWarm)" opacity="0.8" />
+      <rect width="1110" height="810" filter="url(#cloudCool)" opacity="0.7" />
+      <path d="M470 120 C560 100 640 130 600 230 C570 300 500 330 450 300 C400 270 420 160 470 120 Z" fill="#85806c" opacity="0.62" filter="url(#soft14)" />
+      <path d="M600 420 C680 340 800 330 840 360 C800 460 700 500 620 480 Z" fill="#a39d8a" opacity="0.5" filter="url(#soft14)" />
+      <ellipse cx="560" cy="80" rx="90" ry="36" fill="#eceadf" opacity="0.75" filter="url(#soft14)" />
+      <ellipse cx="300" cy="400" rx="120" ry="130" fill="#dde3e8" opacity="0.75" filter="url(#soft30)" />
+      <ellipse cx="210" cy="640" rx="130" ry="80" fill="#e6e4d8" opacity="0.6" filter="url(#soft30)" />
+      <ellipse cx="640" cy="640" rx="140" ry="70" fill="#e4e4dc" opacity="0.6" filter="url(#soft30)" />
+      <rect width="1110" height="810" filter="url(#grain)" opacity="0.06" />
+    </g>
+    <use href="#kFace" fill="none" stroke="#efeee6" stroke-width="2" opacity="0.6" />
+    <use href="#kArm" fill="#d0d0ca" stroke="#e6e6e0" stroke-width="1.5" />
+    <path d="M552 398 L668 318 L610 360 Z" fill="#c9c7bd" />
+    <path d="M527 374 L552 398 L580 372 L545 366 Z" fill="#3b3a36" />
+    <path d="M523 471 C514 494 504 520 503 552 C504 690 610 765 740 765 V781 C602 781 488 700 482 556 C480 520 470 500 478 470 C490 442 520 446 523 471 Z" fill="#353533" />
+    <path d="M412 30 H728 M920 30 H1026 M672 303 H941" stroke="#8a8b8b" stroke-width="4" />
+    <path d="M412 30 L20 769" stroke="#8d8e8e" stroke-width="4" opacity="0.8" />
+  </g>
+
+  <!-- I: emerald enamel -->
+  <g transform="translate(815 40) scale(0.25)">
+    <use href="#iOuter" fill="url(#iRim)" />
+    <use href="#iDark" fill="url(#iBevel)" />
+    <use href="#iFacePath" fill="url(#iFace)" />
+    <g clip-path="url(#iFaceClip)">
+      <path d="M100 385 L320 250 V696 L100 826 Z" fill="#1b3a19" filter="url(#soft14)" />
+      <path d="M140 400 L310 300 V690 L140 780 Z" fill="#1e401b" opacity="0.6" />
+      <rect width="460" height="1040" filter="url(#grainV)" opacity="0.2" />
+      <ellipse cx="250" cy="900" rx="110" ry="60" fill="#76b378" opacity="0.5" filter="url(#soft14)" />
+    </g>
+    <path d="M318 206 V818 L346 843" fill="none" stroke="#5f9365" stroke-width="5" opacity="0.9" />
+    <path d="M304 200 V842" stroke="#467d4c" stroke-width="10" />
+    <path d="M75 202 V800 M33 840 L75 800" fill="none" stroke="#83ab86" stroke-width="4" opacity="0.7" />
+    <path d="M110 208 V802" stroke="#86b189" stroke-width="3" opacity="0.6" />
+    <path d="M203 110 C245 62 325 32 412 39" fill="none" stroke="#8fc392" stroke-width="4" />
+    <path d="M102 95 C152 106 196 140 222 186 C250 112 322 66 408 66" fill="none" stroke="#a9dcaa" stroke-width="3" opacity="0.8" />
+    <path d="M276 1006 L441 885" stroke="#93c896" stroke-width="4" />
+    <path d="M362 110 Q392 108 405 90" fill="none" stroke="#e0f3e0" stroke-width="5" opacity="0.8" />
+  </g>
+</svg>
