@@ -13,12 +13,14 @@ interface SceneState {
   quality: Quality;
   /** Integrated graphics: render below native resolution from the start. */
   integrated: boolean;
+  /** The GPU probe passed and set quality and integrated; the scene may mount. */
+  gpuReady: boolean;
   setProgress: (value: number) => void;
   setReady: () => void;
   setLive: () => void;
   setFailed: () => void;
   setQuality: (quality: Quality) => void;
-  setIntegrated: (integrated: boolean) => void;
+  configureGpu: (gpu: { integrated: boolean; quality: Quality }) => void;
 }
 
 export const useSceneStore = create<SceneState>((set) => ({
@@ -28,10 +30,12 @@ export const useSceneStore = create<SceneState>((set) => ({
   failed: false,
   quality: "high",
   integrated: false,
+  gpuReady: false,
   setProgress: (value) => set((s) => ({ progress: Math.max(s.progress, value) })),
   setReady: () => set({ ready: true, progress: 1 }),
   setLive: () => set({ live: true }),
   setFailed: () => set({ failed: true }),
   setQuality: (quality) => set({ quality }),
-  setIntegrated: (integrated) => set({ integrated }),
+  configureGpu: ({ integrated, quality }) =>
+    set((s) => ({ integrated, quality, gpuReady: true, progress: Math.max(s.progress, 0.2) })),
 }));

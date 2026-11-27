@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Component, useEffect, useRef, useState, type ReactNode } from "react";
+import { Component, useEffect, useRef, type ReactNode } from "react";
 import { detectQuality, isIntegratedGpu } from "@/hooks/useResponsiveQuality";
 import { bindTrack, TRACK } from "@/lib/scrollFilm";
 import { useSceneStore } from "@/store/sceneStore";
@@ -43,7 +43,7 @@ class SceneBoundary extends Component<{ children: ReactNode }> {
 
 export function Experience() {
   const failed = useSceneStore((s) => s.failed);
-  const [canRender, setCanRender] = useState(false);
+  const canRender = useSceneStore((s) => s.gpuReady);
   const track = useRef<HTMLDivElement>(null);
 
   useEffect(() => (track.current ? bindTrack(track.current) : undefined), [failed]);
@@ -55,10 +55,7 @@ export function Experience() {
       store.setFailed();
       return;
     }
-    store.setIntegrated(gpu.integrated);
-    store.setQuality(detectQuality(gpu.integrated));
-    store.setProgress(0.2);
-    setCanRender(true);
+    store.configureGpu({ integrated: gpu.integrated, quality: detectQuality(gpu.integrated) });
   }, []);
 
   if (failed) return <StaticFallback />;
