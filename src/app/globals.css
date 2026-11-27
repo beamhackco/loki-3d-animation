@@ -149,7 +149,7 @@ body {
 
 .waypoint {
   color: color-mix(in srgb, var(--color-mist) 94%, transparent);
-  transition: color 200ms ease-out;
+  transition: color 200ms ease;
 }
 
 .waypoint[aria-current] {

@@ -84,7 +84,7 @@ export function WebsiteUI() {
   }, []);
 
   return (
-    <div className={`pointer-events-none fixed inset-0 z-10 transition-opacity duration-1000 ease-out ${live ? "opacity-100" : "opacity-0"}`}>
+    <div className={`pointer-events-none fixed inset-0 z-10 transition-opacity duration-1000 ease-settle ${live ? "opacity-100" : "opacity-0"}`}>
       {/* Phones set the title and the name over the lower third, so only that third is darkened. */}
       <div className="absolute inset-x-0 bottom-0 h-[46svh] bg-gradient-to-t from-abyss/80 via-abyss/55 to-transparent sm:hidden" aria-hidden="true" />
 
