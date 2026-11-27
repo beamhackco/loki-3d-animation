@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { Component, useEffect, useRef, type ReactNode } from "react";
-import { detectQuality, isIntegratedGpu } from "@/hooks/useResponsiveQuality";
+import { detectQuality, isIntegratedGpu } from "@/lib/gpuTier";
 import { bindTrack, TRACK } from "@/lib/scrollFilm";
 import { useSceneStore } from "@/store/sceneStore";
 import { LoadingScreen } from "./LoadingScreen";
