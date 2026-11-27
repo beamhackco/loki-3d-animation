@@ -1,7 +1,7 @@
 "use client";
 
-import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { useFrame, useLoader, useThree } from "@react-three/fiber";
+import { Component, Suspense, useEffect, useMemo, useRef, type ReactNode } from "react";
 import { DoubleSide, MathUtils, NoColorSpace, ShaderMaterial, TextureLoader, type Group, type PerspectiveCamera } from "three";
 import { pointerState } from "@/hooks/useSceneAnimation";
 import { createRivalGeometry, RIVAL } from "@/lib/rivalGeometry";
@@ -12,6 +12,42 @@ import { rivalFragment, rivalVertex } from "@/shaders/rivalShader";
 
 /** Soles at the surface; the boots stand in the shallow water. */
 const BASE_Y = floorY(RIVAL.z) - 0.012;
+
+/** The supplied artwork, projected onto the front of the sculpt once it arrives. */
+function RivalArt({ material }: { material: ShaderMaterial }) {
+  const cached = useLoader(TextureLoader, "/rival-art.webp");
+  // Our own copy (sharing the image) to configure and release; the cache's stays untouched.
+  const texture = useMemo(() => {
+    const t = cached.clone();
+    t.colorSpace = NoColorSpace;
+    t.anisotropy = 4;
+    return t;
+  }, [cached]);
+  useEffect(() => {
+    material.uniforms.uArt.value = texture;
+    material.uniforms.uArtOn.value = 1;
+    return () => {
+      material.uniforms.uArtOn.value = 0;
+      material.uniforms.uArt.value = null;
+      texture.dispose();
+    };
+  }, [material, texture]);
+  return null;
+}
+
+/** A failed artwork request leaves the rival in the shader's untextured look instead of failing the scene. */
+class ArtBoundary extends Component<{ children: ReactNode }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch(error: unknown) {
+    console.warn("Rival artwork failed to load; drawing the plain sculpt.", error);
+  }
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
 
 /** The rival, across the water beyond Loki, facing him. One mesh, one draw call. */
 export function Rival() {
@@ -40,22 +76,6 @@ export function Rival() {
       }),
     [],
   );
-  // The supplied artwork, projected onto the front of the sculpt. Loads in the
-  // background: he only appears near the end of the film.
-  useEffect(() => {
-    let live = true;
-    new TextureLoader().load("/rival-art.webp", (t) => {
-      if (!live) return t.dispose();
-      t.colorSpace = NoColorSpace;
-      t.anisotropy = 4;
-      material.uniforms.uArt.value = t;
-      material.uniforms.uArtOn.value = 1;
-    });
-    return () => {
-      live = false;
-      material.uniforms.uArt.value?.dispose();
-    };
-  }, [material]);
   useEffect(
     () => () => {
       geometry.dispose();
@@ -77,6 +97,12 @@ export function Rival() {
   return (
     <group ref={group} position={[RIVAL.x, BASE_Y, RIVAL.z]}>
       <mesh geometry={geometry} material={material} frustumCulled={false} />
+      {/* Loads in the background: he only appears near the end of the film. */}
+      <ArtBoundary>
+        <Suspense fallback={null}>
+          <RivalArt material={material} />
+        </Suspense>
+      </ArtBoundary>
     </group>
   );
 }
