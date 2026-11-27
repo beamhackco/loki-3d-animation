@@ -41,18 +41,27 @@ export function WebsiteUI() {
   const fill = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const still = prefersReducedMotion();
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let still = query.matches;
+    const onChange = () => {
+      still = query.matches;
+    };
+    query.addEventListener("change", onChange);
     const place = (el: HTMLElement | null, t: number, [from, to, rampIn, rampOut]: Showing) => {
       if (!el) return;
       const o = windowed(t, from, to, rampIn, rampOut);
       el.style.opacity = o.toFixed(3);
-      if (still) return;
+      // Reduced motion keeps the fade and drops the drift, even if it changes mid-visit.
+      if (still) {
+        el.style.transform = "";
+        return;
+      }
       // A few pixels of drift, so the words sit in the air and not on the glass.
       const k = Math.min(1, Math.max(0, (t - from) / (Math.min(to, TRACK) - from)));
       el.style.transform = `translate3d(0, ${((0.5 - k) * 3).toFixed(2)}vh, 0)`;
     };
     let active = -1;
-    return onPlayhead((t) => {
+    const stop = onPlayhead((t) => {
       place(hero.current, t, HERO_WINDOW);
       place(name.current, t, NAME_WINDOW);
       if (fill.current) fill.current.style.transform = `scaleX(${(t / TRACK).toFixed(4)})`;
@@ -68,6 +77,10 @@ export function WebsiteUI() {
         });
       }
     });
+    return () => {
+      stop();
+      query.removeEventListener("change", onChange);
+    };
   }, []);
 
   return (
