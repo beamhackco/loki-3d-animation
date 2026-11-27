@@ -16,13 +16,18 @@ const HERO_WINDOW: Showing = [-1, 0.85, 0, 0.45];
 /** His name, once his eyes have lit, held to the end of the track. */
 const NAME_WINDOW: Showing = [RIVAL_START + 2.7, TRACK + 1, 0.55, 0];
 
+/** The trip in progress, if any: a new click while it runs keeps the film moving. */
+let travel: gsap.core.Tween | null = null;
+
 function travelTo(e: MouseEvent, w: Waypoint) {
   e.preventDefault();
   const distance = Math.abs(w.at - scroll.target);
-  gsap.to(window, {
+  const moving = travel?.isActive() ?? false;
+  travel = gsap.to(window, {
     scrollTo: { y: pixelsAt(w.at), autoKill: true },
     duration: prefersReducedMotion() ? 0 : Math.min(4.2, 0.9 + distance * 0.5),
-    ease: "sine.inOut",
+    // From rest the film eases in; replacing a trip in progress it leaves at speed.
+    ease: moving ? "power2.out" : "sine.inOut",
     overwrite: true,
   });
 }
