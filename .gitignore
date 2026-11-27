@@ -5,3 +5,4 @@ out
 .dev.vars
 *.tsbuildinfo
 next-env.d.ts
+plans
