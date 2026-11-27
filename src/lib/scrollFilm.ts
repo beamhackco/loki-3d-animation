@@ -11,7 +11,10 @@ export const SHOT_LENGTH = 4.0417;
 export const SHOT_START = 1;
 export const SHOT_END = SHOT_START + SHOT_LENGTH;
 
-export const TRACK = 7.85;
+/** The rival's leg begins once the surge has settled. */
+export const RIVAL_START = 7.85;
+
+export const TRACK = RIVAL_START + 3.5;
 
 export interface Waypoint {
   id: string;
@@ -26,7 +29,8 @@ export const WAYPOINTS: readonly Waypoint[] = [
   { id: "shore", label: "Shore", from: 0, at: 0 },
   { id: "current", label: "Current", from: SHOT_START, at: 2.45 },
   { id: "approach", label: "Approach", from: 3.02, at: 4.3 },
-  { id: "arrival", label: "Arrival", from: SHOT_END, at: TRACK },
+  { id: "arrival", label: "Arrival", from: SHOT_END, at: RIVAL_START - 0.25 },
+  { id: "rival", label: "Rival", from: RIVAL_START, at: TRACK },
 ];
 
 /** Live state. Mutated once per frame; never goes through React. */

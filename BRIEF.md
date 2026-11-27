@@ -19,6 +19,7 @@ Self-authored under explicit creative delegation ("make it to scroll animation b
 | Current | Curiosity | Dolly starts, first pulses answer the hand | 2.0 vh |
 | Approach | Unease | Horns grow, cables close in, focus narrows | 2.0 vh |
 | Arrival | Held breath, then awe, then calm | Energy dies (authored silence, 0.8 vh), every cable lights inward at once, the figure holds | 2.8 vh |
+| Rival | Plunge, dark, then dread | The camera dives through the figure's coat into darkness, comes out the far side where the light has gathered into one shaft, the rival condenses out of the water mist (hood, steel mask, green cloak, arms crossed, from the user's image), the camera arcs toward him and his eyes ignite red | 3.5 vh |
 
 **Peak** (Arrival): "it all went dark, I kept scrolling, and every cable lit up and ran into the thing."
 
@@ -28,4 +29,4 @@ Self-authored under explicit creative delegation ("make it to scroll animation b
 
 **Authored silence:** 5.0 to 5.8 vh. No copy, energy near zero, halo dimmed.
 
-**Reduced motion:** four still framings that dissolve at the leg boundaries. No dolly, no drag, no traveling surge.
+**Reduced motion:** five still framings that dissolve at the leg boundaries. No dolly, no drag, no traveling surge.

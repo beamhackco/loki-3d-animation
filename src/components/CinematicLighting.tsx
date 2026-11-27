@@ -63,6 +63,8 @@ export function CinematicLighting() {
     const base = 0.03 * shot.energy + hit * 0.5;
     power.set((base + arriving(pulses.L, et) * 0.22 * shot.energy) * flicker, (base + arriving(pulses.R, et) * 0.22 * shot.energy) * flicker);
     sceneUniforms.uEmber.value = 0.4 + 0.55 * shot.energy + 0.8 * hit;
+    // Once the camera is through the figure, its halo would only veil the rival.
+    material.uniforms.uStrength.value = 1 - shot.rival;
   });
 
   return <mesh geometry={geometry} material={material} position={[0, -0.55, -1.95]} renderOrder={7} />;

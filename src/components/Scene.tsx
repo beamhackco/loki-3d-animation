@@ -1,11 +1,13 @@
 "use client";
 
+import "@/lib/threeConsole";
 import { PerformanceMonitor } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { NoToneMapping } from "three";
 import { useResponsiveQuality } from "@/hooks/useResponsiveQuality";
 import { useSceneAnimation } from "@/hooks/useSceneAnimation";
+import { getNoiseTexture } from "@/lib/noiseTexture";
 import { BASE_FOV } from "@/lib/space";
 import { createCurveTexture } from "@/lib/tendrilBuffers";
 import { createTendrils } from "@/lib/tendrilPaths";
@@ -16,6 +18,7 @@ import { Character } from "./Character";
 import { CinematicLighting } from "./CinematicLighting";
 import { EnergyParticles } from "./EnergyParticles";
 import { PostEffects } from "./PostEffects";
+import { Rival } from "./Rival";
 import { Tendrils } from "./Tendrils";
 import { WaterFloor } from "./WaterFloor";
 
@@ -47,6 +50,19 @@ function Preloader() {
   return null;
 }
 
+/** Keeps the shared noise crisp where it's seen at a grazing angle, like the water floor. */
+function NoiseAnisotropy({ level }: { level: number }) {
+  const gl = useThree((s) => s.gl);
+  useEffect(() => {
+    const tex = getNoiseTexture();
+    const anisotropy = Math.min(level, gl.capabilities.getMaxAnisotropy());
+    if (tex.anisotropy === anisotropy) return;
+    tex.anisotropy = anisotropy;
+    tex.needsUpdate = true;
+  }, [gl, level]);
+  return null;
+}
+
 function World() {
   const settings = useResponsiveQuality();
   useSceneAnimation();
@@ -57,12 +73,14 @@ function World() {
 
   return (
     <>
+      <NoiseAnisotropy level={settings.anisotropy} />
       <CameraController />
       <AtmosphericFog layers={settings.fogLayers} dust={settings.dust} />
       <WaterFloor />
       <CinematicLighting />
       <Tendrils tendrils={tendrils} curves={curves} segments={settings.tubeSegments} sides={settings.tubeSides} />
       <Character />
+      <Rival />
       <EnergyParticles tendrils={tendrils} curves={curves} perPulse={settings.sparks} />
       <PostEffects settings={settings} />
       <Preloader />

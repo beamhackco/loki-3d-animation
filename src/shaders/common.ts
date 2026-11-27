@@ -49,4 +49,12 @@ export const commonGLSL = /* glsl */ `
     float wide = 0.22 * gauss(dx, 360.0);
     return 0.085 + column + top + band + wide;
   }
+
+  // The rival's leg (dark = 1): the light gathers into one shaft behind it and
+  // the rest of the place falls away. Multiplies a backdrop intensity.
+  float gather(vec2 p, float dark) {
+    float dx = p.x - 436.0;
+    float shaft = gauss(dx, 62.0) * (0.55 + 0.45 * smoothstep(150.0, 430.0, p.y));
+    return mix(1.0, 0.14 + 1.05 * shaft + 0.22 * gauss(dx, 180.0), dark);
+  }
 `;

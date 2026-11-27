@@ -30,15 +30,16 @@ export function CameraController() {
 
   useFrame(() => {
     const push = MathUtils.clamp((CAM_START - shot.distance) / CAM_START, 0, 1);
-    const distance = shot.distance + portrait * push * 3.0;
+    // Portrait holds back to keep the horns in frame, until the dive goes through him.
+    const distance = shot.distance + portrait * push * 3.0 * (1 - shot.dive);
     const drift = sceneUniforms.uTime.value;
-    const reach = distance * 0.013;
+    const reach = Math.max(1, Math.abs(distance)) * 0.013;
     const x = pointerState.x * reach;
     const y = shot.targetY + pointerState.y * reach * 0.6;
     const breathe = 1 + Math.sin(drift * 0.4) * 0.0025;
-    camera.position.set(x, y, distance * breathe);
+    camera.position.set(shot.camX + x, y, distance * breathe);
     // Aim slightly past the figure: near tendrils slide against the fog behind.
-    camera.lookAt(x * 0.25, shot.targetY + (y - shot.targetY) * 0.25, -1.5);
+    camera.lookAt(x * 0.25, shot.targetY + shot.aimY + (y - shot.targetY) * 0.25, shot.aimZ);
   }, -1);
 
   return null;

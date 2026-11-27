@@ -27,6 +27,11 @@ export const sceneUniforms = {
   uEnergyLightPower: { value: new Vector2(0, 0) },
   /** Emerald glow at the heart of the coat. */
   uEmber: { value: 0.3 },
+  /** The rival condensing out of the mist, 0 to 1. */
+  uRival: { value: 0 },
+  uRivalEyes: { value: 0 },
+  /** The rival's leg: the light gathers behind it and the place goes dark. */
+  uDark: { value: 0 },
 };
 
 export const noiseUniform = () => ({ value: getNoiseTexture() });
@@ -43,4 +48,16 @@ export const shot = {
   reveal: 0,
   /** Depth-of-field strength, 0 to 1. */
   focus: 0,
+  /** Focus pulled from the figure (0) to the rival (1). */
+  rack: 0,
+  /** Where the camera aims: height above targetY, and depth. */
+  aimY: 0,
+  aimZ: -1.5,
+  /** 0 to 1 as the camera dives through the figure; drops the portrait set-back. */
+  dive: 0,
+  /** Sideways camera offset while it keeps aiming at the rival: a slow arc around it. */
+  camX: 0,
+  rival: 0,
+  rivalEyes: 0,
+  dark: 0,
 };

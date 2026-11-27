@@ -65,7 +65,7 @@ export function Experience() {
 
   return (
     <>
-      <div className="pointer-events-none fixed inset-x-0 top-0 h-lvh" role="img" aria-label="A two-horned figure in a long coat, seen from behind, gripping fans of black cable in both fists against green light.">
+      <div className="pointer-events-none fixed inset-x-0 top-0 h-lvh" role="img" aria-label="A two-horned figure in a long coat, seen from behind, gripping fans of black cable in both fists against green light. At the end, the view passes through the figure to a hooded rival in a steel mask and green cloak, arms crossed, standing in the water facing it.">
         {canRender && (
           <SceneBoundary>
             <Scene />

@@ -50,6 +50,7 @@ export const backdropFragment = /* glsl */ `
   uniform float uTime;
   uniform float uHalo;
   uniform float uReveal;
+  uniform float uDark;
   varying vec2 vPx;
 
   void main() {
@@ -80,6 +81,7 @@ export const backdropFragment = /* glsl */ `
     I *= mix(0.86, 1.0, uHalo) * smoothstep(0.0, 1.0, uReveal);
     // Only the silence before the surge goes below 0.85.
     I *= mix(0.6, 1.0, smoothstep(0.4, 0.85, uHalo));
+    I *= gather(p, uDark);
 
     // Dither hides banding in the long dark gradients.
     float d = texture2D(uNoise, gl_FragCoord.xy / 97.0).b - 0.5;
@@ -110,6 +112,7 @@ export const fogFragment = /* glsl */ `
   uniform vec2 uDrift;
   uniform vec2 uBand; // center and half-height of the mist, world units
   uniform float uCenterBias;
+  uniform float uDark;
   varying vec2 vUv;
   varying vec3 vWorld;
 
@@ -129,8 +132,10 @@ export const fogFragment = /* glsl */ `
     float near = smoothstep(0.35, 1.9, cameraPosition.z - vWorld.z);
 
     vec2 p = backdropBehind(vWorld, cameraPosition);
-    float I = bgBase(p) * 0.85 + uLift;
-    gl_FragColor = vec4(ramp(I), d * band * bias * edge * near * uOpacity * uReveal);
+    float I = (bgBase(p) * 0.85 + uLift) * gather(p, uDark);
+    // Thinner while the rival stands there, so the mist doesn't veil it.
+    float clear = 1.0 - 0.6 * uDark;
+    gl_FragColor = vec4(ramp(I), d * band * bias * edge * near * clear * uOpacity * uReveal);
   }
 `;
 
@@ -162,6 +167,8 @@ export const haloFragment = /* glsl */ `
 
     vec2 e = vUv * 2.0 - 1.0;
     g *= fall(1.0, 0.6, length(e));
+    // Thins out as the camera dives past it.
+    g *= smoothstep(0.35, 1.9, cameraPosition.z - vWorld.z);
     vec3 col = mix(lin(vec3(92.0, 178.0, 86.0)), lin(vec3(198.0, 240.0, 194.0)), smoothstep(0.2, 0.9, g));
     gl_FragColor = vec4(col, clamp(g, 0.0, 0.97));
   }

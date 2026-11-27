@@ -1,3 +1,4 @@
+import { RIVAL } from "@/lib/rivalGeometry";
 import { FLOOR_SLOPE, FLOOR_Y } from "@/lib/space";
 import { commonGLSL } from "./common";
 import { shaftGLSL } from "./fogShader";
@@ -24,7 +25,26 @@ export const waterFragment = /* glsl */ `
   uniform float uTime;
   uniform float uHalo;
   uniform float uReveal;
+  uniform float uDark;
+  uniform float uRival;
   varying vec3 vWorld;
+
+  const vec3 RIVAL_AT = vec3(${RIVAL.x.toFixed(4)}, ${(FLOOR_Y + FLOOR_SLOPE * RIVAL.z).toFixed(4)}, ${RIVAL.z.toFixed(4)});
+
+  // The rival's silhouette by height above its soles: boots, cloak, hood.
+  float rivalHalfWidth(float y) {
+    if (y < 0.0) return 0.0;
+    if (y < 0.42) return 0.4;
+    if (y < 1.8) return mix(0.55, 0.44, smoothstep(0.42, 1.8, y));
+    if (y < 2.08) return mix(0.44, 0.22, smoothstep(1.8, 2.08, y));
+    return 0.17 * (1.0 - smoothstep(2.12, 2.45, y));
+  }
+
+  // Rings spreading from where something stands in the water.
+  float rings(vec2 at, float t, float phase) {
+    float d = length((vWorld.xz - at) * vec2(1.0, 1.6));
+    return max(0.0, sin(d * 48.0 - t * 2.6 + phase)) * exp(-d * 5.0) * smoothstep(0.015, 0.05, d);
+  }
 
   float robeHalfWidth(float y) {
     return mix(0.36, 0.62, fall(-0.6, -1.3, y));
@@ -69,6 +89,22 @@ export const waterFragment = /* glsl */ `
     // Light slipping past the hem breaks up on the surface either side.
     float gap = gauss(abs(hc.x - 0.02) - w - 0.1, 0.2) * smoothstep(0.0, 1.0, vWorld.z);
     I += gap * smoothstep(-0.12, 0.2, r2 + r3 * 0.8) * 0.42 * uHalo;
+    I *= gather(p, uDark);
+
+    // The rival, once it stands there: its reflection blocks the light, it
+    // shades the water around its feet, and rings spread from both boots.
+    float ripple = 0.0;
+    if (uRival > 0.0) {
+      if (vWorld.z > RIVAL_AT.z) {
+        vec3 hr = vWorld + R * ((RIVAL_AT.z - vWorld.z) / min(R.z, -0.02));
+        float wr = rivalHalfWidth(hr.y - RIVAL_AT.y);
+        I *= 1.0 - 0.88 * uRival * fall(wr + 0.05, wr - 0.04, abs(hr.x - RIVAL_AT.x + r2 * 0.06));
+      }
+      vec2 dc = (vWorld.xz - RIVAL_AT.xz - vec2(0.0, 0.08)) / vec2(0.8, 0.55);
+      I *= 1.0 - 0.75 * uRival * exp(-dot(dc, dc) * 2.2);
+      ripple = 0.8 * rings(RIVAL_AT.xz + vec2(-0.32, 0.09), uTime, 1.7) + 0.8 * rings(RIVAL_AT.xz + vec2(0.31, 0.09), uTime, 3.9);
+      ripple *= uRival;
+    }
 
     float fres = 0.12 + 0.88 * pow(1.0 - clamp(dot(-view, up), 0.0, 1.0), 4.0);
     float nearDark = smoothstep(2.2, 8.5, dist);
@@ -78,6 +114,8 @@ export const waterFragment = /* glsl */ `
     // Thin crests catch the light.
     float crest = smoothstep(0.2, 0.36, r3 + r2 * 0.5) * calm * fall(1.2, 0.2, abs(vWorld.x) * 0.5);
     col += lin(vec3(52.0, 82.0, 54.6)) * crest * 0.35 * nearDark;
+
+    col += lin(vec3(96.0, 150.0, 98.0)) * ripple * 0.2;
 
     // Dissolve into the mist long before the plane ends.
     float far = smoothstep(2.6, 13.0, dist);

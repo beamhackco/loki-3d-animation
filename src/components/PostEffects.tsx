@@ -1,11 +1,12 @@
 "use client";
 
 import { useFrame, useThree } from "@react-three/fiber";
-import { Bloom, DepthOfField, EffectComposer, Noise, Vignette } from "@react-three/postprocessing";
+import { Bloom, DepthOfField, EffectComposer, Noise, SMAA, Vignette } from "@react-three/postprocessing";
 import { BlendFunction, KernelSize, type DepthOfFieldEffect } from "postprocessing";
 import { useRef } from "react";
 import { HalfFloatType } from "three";
 import type { QualitySettings } from "@/hooks/useResponsiveQuality";
+import { RIVAL } from "@/lib/rivalGeometry";
 import { shot } from "@/lib/sceneUniforms";
 
 /** Energy blooms, distance softens, edges fall away, grain binds it together. */
@@ -19,7 +20,7 @@ export function PostEffects({ settings }: { settings: QualitySettings }) {
     if (!effect) return;
     // Focus stays on the figure while the background blurs during the push-in.
     const coc = effect.cocMaterial;
-    coc.focusDistance = shot.distance - 0.1;
+    coc.focusDistance = shot.distance - 0.1 + shot.rack * (0.1 - RIVAL.z);
     coc.focusRange = 2.6 - shot.focus * 0.9;
     effect.bokehScale = 0.4 + shot.focus * 2.6;
   });
@@ -36,6 +37,8 @@ export function PostEffects({ settings }: { settings: QualitySettings }) {
         levels={settings.bloomLevels}
         kernelSize={KernelSize.MEDIUM}
       />
+      {/* After blur and glow, before grain: SMAA would otherwise smooth the grain away. */}
+      <SMAA preset={settings.smaa} />
       <Vignette offset={portrait ? 0.18 : 0.22} darkness={portrait ? 0.62 : 0.34} />
       <Noise premultiply blendFunction={BlendFunction.ADD} opacity={0.07} />
     </EffectComposer>

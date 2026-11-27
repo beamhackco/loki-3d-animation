@@ -5,8 +5,9 @@ import gsap from "gsap";
 import { useEffect, useRef } from "react";
 import { MathUtils, type PerspectiveCamera } from "three";
 import { sceneUniforms, shot } from "@/lib/sceneUniforms";
-import { notifyPlayhead, prefersReducedMotion, scroll, SHOT_END, SHOT_LENGTH, SHOT_START, TRACK, WAYPOINTS } from "@/lib/scrollFilm";
-import { CAM_START, sampleStops, type Stops } from "@/lib/space";
+import { notifyPlayhead, prefersReducedMotion, RIVAL_START, scroll, SHOT_END, SHOT_LENGTH, SHOT_START, TRACK, WAYPOINTS } from "@/lib/scrollFilm";
+import { RIVAL } from "@/lib/rivalGeometry";
+import { CAM_START, sampleStops, smoothstep, type Stops } from "@/lib/space";
 import { useSceneStore } from "@/store/sceneStore";
 
 /**
@@ -58,6 +59,26 @@ function buildFilm() {
   tl.to(shot, { halo: 1.4, duration: 0.5, ease: "power2.out" }, SHOT_END + 1.45);
   tl.to(shot, { halo: 1.1, duration: 0.6, ease: "sine.inOut" }, SHOT_END + 2.0);
   tl.to(shot, { energy: 1, duration: 0.5, ease: "sine.inOut" }, SHOT_END + 1.9);
+
+  // Rival: the camera dives into the figure, through the dark of the coat, and
+  // comes out the other side facing what it was holding the cables against.
+  const R = RIVAL_START;
+  const IN = R + 1.3;
+  tl.to(shot, { distance: 0, duration: IN - R, ease: "power2.in" }, R);
+  tl.to(shot, { targetY: -1.05, duration: IN - R, ease: "sine.inOut" }, R);
+  tl.to(shot, { dive: 1, duration: 1.0, ease: "sine.inOut" }, R);
+  tl.to(shot, { energy: 1.35, duration: 0.75, ease: "power1.in" }, R + 0.5);
+  tl.to(shot, { distance: -0.6, targetY: -1.6, aimY: -0.35, duration: 0.6, ease: "power2.out" }, IN);
+  tl.to(shot, { aimZ: RIVAL.z, duration: 0.9, ease: "sine.inOut" }, R + 1.0);
+  tl.to(shot, { energy: 0.3, duration: 0.5, ease: "sine.out" }, IN + 0.05);
+  tl.to(shot, { halo: 0.7, focus: 0.25, rack: 1, duration: 0.6, ease: "sine.inOut" }, IN);
+  tl.fromTo(shot, { rival: 0 }, { rival: 1, duration: 0.8, ease: "none" }, IN);
+  tl.fromTo(shot, { dark: 0 }, { dark: 1, duration: 0.6, ease: "sine.out" }, IN - 0.15);
+
+  // A slow walk toward it; the eyes catch.
+  tl.to(shot, { distance: -2.3, targetY: -1.35, aimY: -0.05, camX: 0.55, duration: 1.2, ease: "sine.inOut" }, R + 2.1);
+  tl.fromTo(shot, { rivalEyes: 0 }, { rivalEyes: 1, duration: 0.3, ease: "power2.in" }, R + 2.55);
+  tl.to(shot, { halo: 0.95, energy: 0.6, duration: 0.6, ease: "sine.inOut" }, R + 2.6);
   tl.set({}, {}, TRACK);
   return tl;
 }
@@ -70,7 +91,7 @@ function frozenShot(): number | null {
 }
 
 /** Reduced motion: each leg is one still framing. */
-const STILLS = [0, 2.45, 4.3, TRACK];
+const STILLS = [0, 2.45, 4.3, RIVAL_START - 0.25, TRACK];
 const legAt = (t: number) => {
   let leg = 0;
   WAYPOINTS.forEach((w, i) => {
@@ -193,10 +214,15 @@ export function useSceneAnimation() {
     sceneUniforms.uDrag.value = scroll.drag;
     sceneUniforms.uBillow.value = Math.min(1, shot.billow + pull * 0.12);
     sceneUniforms.uHalo.value = shot.halo;
-    sceneUniforms.uReveal.value = shot.reveal;
+    // Inside the coat there is nothing to see: the frame goes dark as the lens passes through.
+    const inside = 1 - smoothstep(0.0, 0.6, Math.abs(shot.distance - 0.05));
+    sceneUniforms.uReveal.value = shot.reveal * (1 - 0.94 * inside);
+    sceneUniforms.uRival.value = shot.rival;
+    sceneUniforms.uRivalEyes.value = shot.rivalEyes;
+    sceneUniforms.uDark.value = shot.dark;
 
     // Pointer projected onto the character's plane.
-    const halfH = Math.tan(MathUtils.degToRad(camera.fov / 2)) * camera.position.z;
+    const halfH = Math.tan(MathUtils.degToRad(camera.fov / 2)) * Math.max(0.5, camera.position.z);
     sceneUniforms.uPointer.value.set(
       pointerState.x * halfH * camera.aspect + camera.position.x,
       pointerState.y * halfH + camera.position.y,

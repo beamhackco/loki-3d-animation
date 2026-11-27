@@ -3,32 +3,18 @@
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useEffect, useRef, type MouseEvent } from "react";
-import { onPlayhead, pixelsAt, prefersReducedMotion, scroll, SHOT_END, TRACK, WAYPOINTS, windowed, type Waypoint } from "@/lib/scrollFilm";
+import { onPlayhead, pixelsAt, prefersReducedMotion, RIVAL_START, scroll, TRACK, WAYPOINTS, windowed, type Waypoint } from "@/lib/scrollFilm";
 import { useSceneStore } from "@/store/sceneStore";
 import { TitleMark } from "./TitleMark";
 
 gsap.registerPlugin(ScrollToPlugin);
 
-interface Line {
-  text: string;
-  /** Track position where it starts and ends, and the length of each ramp. */
-  window: [from: number, to: number, rampIn: number, rampOut: number];
-  /** Corner or flank the line holds on wide screens; phones use the lower edge. */
-  place: string;
-}
+/** Track position where something starts and ends, and the length of each ramp. */
+type Showing = [from: number, to: number, rampIn: number, rampOut: number];
 
-/** One quote, spoken in pieces as the camera closes in and whole at the end. */
-const QUOTE = "I know what kind of god I need to be.";
-const SOURCE = "Loki, season 2 finale (2023)";
-
-const LINES: readonly Line[] = [
-  { text: "I know", window: [1.1, 2.0, 0.22, 0.22], place: "sm:bottom-28 sm:left-10" },
-  { text: "what kind of god", window: [2.2, 3.25, 0.25, 0.25], place: "sm:left-auto sm:right-10 sm:bottom-auto sm:top-[30%] sm:text-right" },
-  { text: "I need to be", window: [3.75, 4.85, 0.25, 0.25], place: "sm:bottom-16 sm:left-10" },
-];
-
-const HERO_WINDOW: Line["window"] = [-1, 0.85, 0, 0.45];
-const QUOTE_WINDOW: Line["window"] = [SHOT_END + 2.1, TRACK + 1, 0.4, 0];
+const HERO_WINDOW: Showing = [-1, 0.85, 0, 0.45];
+/** His name, once his eyes have lit, held to the end of the track. */
+const NAME_WINDOW: Showing = [RIVAL_START + 2.7, TRACK + 1, 0.55, 0];
 
 function travelTo(e: MouseEvent, w: Waypoint) {
   e.preventDefault();
@@ -45,14 +31,13 @@ function travelTo(e: MouseEvent, w: Waypoint) {
 export function WebsiteUI() {
   const live = useSceneStore((s) => s.live);
   const hero = useRef<HTMLDivElement>(null);
-  const quote = useRef<HTMLElement>(null);
-  const lines = useRef<(HTMLParagraphElement | null)[]>([]);
+  const name = useRef<HTMLHeadingElement>(null);
   const links = useRef<(HTMLAnchorElement | null)[]>([]);
   const fill = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const still = prefersReducedMotion();
-    const place = (el: HTMLElement | null, t: number, [from, to, rampIn, rampOut]: Line["window"]) => {
+    const place = (el: HTMLElement | null, t: number, [from, to, rampIn, rampOut]: Showing) => {
       if (!el) return;
       const o = windowed(t, from, to, rampIn, rampOut);
       el.style.opacity = o.toFixed(3);
@@ -64,8 +49,7 @@ export function WebsiteUI() {
     let active = -1;
     return onPlayhead((t) => {
       place(hero.current, t, HERO_WINDOW);
-      place(quote.current, t, QUOTE_WINDOW);
-      LINES.forEach((line, i) => place(lines.current[i], t, line.window));
+      place(name.current, t, NAME_WINDOW);
       if (fill.current) fill.current.style.transform = `scaleX(${(t / TRACK).toFixed(4)})`;
       let now = 0;
       WAYPOINTS.forEach((w, i) => {
@@ -83,36 +67,20 @@ export function WebsiteUI() {
 
   return (
     <div className={`pointer-events-none fixed inset-0 z-10 transition-opacity duration-1000 ease-out ${live ? "opacity-100" : "opacity-0"}`}>
-      {/* Phones set every line over the lower third, so only that third is darkened. */}
+      {/* Phones set the title and the name over the lower third, so only that third is darkened. */}
       <div className="absolute inset-x-0 bottom-0 h-[46svh] bg-gradient-to-t from-abyss/80 via-abyss/55 to-transparent sm:hidden" aria-hidden="true" />
 
-      <div ref={hero} className="absolute bottom-28 left-6 sm:bottom-10 sm:left-10">
+      {/* Centred over the lower edge of the frame, where the rival's name lands at the end. */}
+      <div ref={hero} className="absolute inset-x-0 bottom-[5.25rem] flex justify-center sm:bottom-24">
         <TitleMark live={live} />
       </div>
 
-      {LINES.map((line, i) => (
-        <p
-          key={line.text}
-          // The whole quote is read once, below.
-          aria-hidden="true"
-          ref={(el) => void (lines.current[i] = el)}
-          style={{ opacity: 0 }}
-          className={`line on-scene absolute bottom-28 left-6 text-[clamp(2rem,1.4rem+2.4vw,3.75rem)] leading-[1.1] ${line.place}`}
-        >
-          {line.text}
-        </p>
-      ))}
-
-      <figure
-        ref={quote}
-        style={{ opacity: 0 }}
-        className="line on-scene absolute bottom-28 left-6 max-w-[19rem] sm:inset-x-0 sm:bottom-10 sm:mx-auto sm:w-[min(40vh,24rem)] sm:max-w-none sm:text-center"
-      >
-        <blockquote className="text-[1.6rem] leading-[1.14] text-balance sm:text-[clamp(1.3rem,3.9vh,2.4rem)]">
-          <p>&ldquo;{QUOTE}&rdquo;</p>
-        </blockquote>
-        <figcaption className="mt-3 text-[0.95rem] text-mist">{SOURCE}</figcaption>
-      </figure>
+      {/* Phones break the name over two lines; wider screens hold it on one. */}
+      <h2 ref={name} style={{ opacity: 0 }} className="doom-name absolute inset-x-0 bottom-[5.25rem] text-center sm:bottom-24">
+        <span className="doom-name__mark">
+          <span className="doom-name__word">Victor Von</span> <span className="doom-name__word">Doom</span>
+        </span>
+      </h2>
 
       <nav aria-label="Scene" className="rail max-sm:before:hidden pointer-events-auto absolute inset-x-6 bottom-[max(1.25rem,env(safe-area-inset-bottom))] sm:inset-x-auto sm:right-10 sm:bottom-9 sm:w-[23rem]">
         <ol className="flex justify-between">

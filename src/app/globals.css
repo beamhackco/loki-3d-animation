@@ -31,15 +31,6 @@ body {
   text-shadow: 0 0 18px rgb(2 8 3 / 0.75), 0 1px 2px rgb(2 8 3 / 0.6);
 }
 
-/* Soft shade behind a line of text only, so the sky can stay bright around it. */
-.line::before {
-  content: "";
-  position: absolute;
-  inset: -3.5rem -5rem;
-  z-index: -1;
-  background: radial-gradient(closest-side, rgb(2 8 3 / 0.68), rgb(2 8 3 / 0.46) 52%, transparent);
-}
-
 /* Darkens only the corner the waypoints sit in, where cables pass behind them. */
 .rail::before {
   content: "";
@@ -79,6 +70,80 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .title-glint {
     display: none;
+  }
+}
+
+/*
+ * The rival's name: wide slanted capitals in emerald metal between two chrome
+ * rules, after the lettering of a film title.
+ */
+.doom-name::before {
+  content: "";
+  position: absolute;
+  inset: -3rem 8%;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgb(2 8 3 / 0.78), rgb(2 8 3 / 0.5) 55%, transparent);
+}
+
+.doom-name__mark {
+  position: relative;
+  display: inline-block;
+  padding: 0.36em 0.55em 0.4em;
+  transform: skewX(-12deg) scaleX(1.2);
+  font-family: var(--font-orbitron), "Eurostile", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: 0.075em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.doom-name__mark::before,
+.doom-name__mark::after {
+  content: "";
+  position: absolute;
+  height: max(2px, 0.075em);
+  border-radius: 1px;
+  background: linear-gradient(180deg, #f4f7f4 0%, #9aa39c 45%, #3d443f 55%, #c9d0ca 100%);
+  box-shadow: 0 0 0 0.5px rgb(8 20 10 / 0.8), 0 0.04em 0.1em rgb(0 0 0 / 0.5);
+}
+
+.doom-name__mark::before {
+  top: 0.12em;
+  left: 0.9em;
+  right: 0.3em;
+}
+
+.doom-name__mark::after {
+  bottom: 0.12em;
+  left: 0.15em;
+  right: -0.15em;
+}
+
+.doom-name__word {
+  display: block;
+  color: transparent;
+  background: linear-gradient(180deg, #e2ffe6 0%, #8af59e 16%, #36d65a 38%, #1db443 56%, #108c30 76%, #1fae44 90%, #08471a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 0 0.5px #021405) drop-shadow(0 0 0.5px #021405) drop-shadow(0 0.05em 0.1em rgb(0 0 0 / 0.7)) drop-shadow(0 0 0.3em rgb(46 220 96 / 0.28));
+}
+
+.doom-name__word + .doom-name__word {
+  margin-top: 0.12em;
+}
+
+@media (min-width: 640px) {
+  .doom-name__mark {
+    font-size: clamp(1.6rem, 0.6rem + 2.4vw, 3.4rem);
+  }
+
+  .doom-name__word {
+    display: inline;
+  }
+
+  .doom-name__word + .doom-name__word {
+    margin-top: 0;
   }
 }
 

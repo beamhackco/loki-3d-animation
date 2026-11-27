@@ -1,8 +1,8 @@
 # Loki
 
-A personal fan piece. Loki, its logo and the quote (Loki, season 2) belong to Marvel and Disney. The title is a hand-drawn recreation of a title image supplied by the owner of this project.
+A personal fan piece. Loki, Doctor Doom and their logos belong to Marvel and Disney; the rival's artwork was supplied by the owner of this project. The title is a hand-drawn recreation of a title image supplied by the owner of this project.
 
-A scroll-driven, real-time 3D scene built with Next.js, React Three Fiber and custom GLSL. Nothing in the scene is video or an imported model: the figure, the cables, the fog and the light are all procedural.
+A scroll-driven, real-time 3D scene built with Next.js, React Three Fiber and custom GLSL. Nothing in the scene is video or an imported model: the figure, the cables, the fog and the light are all procedural. The rival is sculpted the same way, with the supplied artwork (`public/rival-art.webp`) projected onto it from the front.
 
 ```
 npm install
@@ -43,11 +43,13 @@ The Node version comes from `.node-version`. The project name is in `wrangler.to
 
 | To change | Edit |
 | --- | --- |
-| Quote, waypoint links | `src/components/WebsiteUI.tsx` |
+| Title, the rival's name at the end, waypoint links | `src/components/WebsiteUI.tsx`, name lettering in `src/app/globals.css` (`.doom-name`) |
 | Title artwork | `artwork/loki-title.svg`, then export it at 1764 x 544 with transparency to `public/loki-title.webp` |
 | Scroll length and waypoint positions | `src/lib/scrollFilm.ts` |
 | Cable arrangement, pulse timing | `src/lib/tendrilPaths.ts` |
 | Figure: horns, head, coat, arms, hands | `src/lib/characterGeometry.ts` |
+| Rival at the end: hood, mask, armor, cloak; where he stands | `src/lib/rivalGeometry.ts` |
+| Rival's look and motion: projected artwork, green rim light, steel glints, red eyes, wind, breath | `src/shaders/rivalShader.ts`, head turn and artwork loading in `src/components/Rival.tsx` |
 | Light shafts, mist, halo | `src/shaders/fogShader.ts`, layers in `src/components/AtmosphericFog.tsx` |
 | Energy look | `src/shaders/energyShader.ts`, `src/shaders/tendrilShader.ts` |
 | What happens at each scroll position | `buildFilm()` in `src/hooks/useSceneAnimation.ts` |

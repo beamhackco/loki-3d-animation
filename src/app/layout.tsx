@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Tenor_Sans } from "next/font/google";
+import { Orbitron, Tenor_Sans } from "next/font/google";
 import type { ReactNode } from "react";
 import "./globals.css";
 
 const tenor = Tenor_Sans({ weight: "400", subsets: ["latin"], variable: "--font-tenor", display: "swap" });
+/** Wide techno capitals for the rival's name. */
+const orbitron = Orbitron({ weight: "800", subsets: ["latin"], variable: "--font-orbitron", display: "swap" });
 
 export const metadata: Metadata = {
   title: "Loki",
@@ -20,7 +22,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={tenor.variable}>
+    <html lang="en" className={`${tenor.variable} ${orbitron.variable}`}>
       <body>{children}</body>
     </html>
   );

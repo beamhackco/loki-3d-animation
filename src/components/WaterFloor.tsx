@@ -41,6 +41,8 @@ export function WaterFloor() {
           uTime: sceneUniforms.uTime,
           uHalo: sceneUniforms.uHalo,
           uReveal: sceneUniforms.uReveal,
+          uDark: sceneUniforms.uDark,
+          uRival: sceneUniforms.uRival,
         },
       }),
     [],
