@@ -90,6 +90,21 @@ function World() {
 
 const LOWER = { high: "medium", medium: "low", low: "low" } as const;
 
+/** Marks the scene failed on a lost WebGL context; detaches before R3F's own teardown forces one. */
+function ContextLossWatcher() {
+  const gl = useThree((s) => s.gl);
+  useEffect(() => {
+    const canvas = gl.domElement;
+    const onContextLost = (e: Event) => {
+      e.preventDefault();
+      useSceneStore.getState().setFailed();
+    };
+    canvas.addEventListener("webglcontextlost", onContextLost);
+    return () => canvas.removeEventListener("webglcontextlost", onContextLost);
+  }, [gl]);
+  return null;
+}
+
 export default function Scene() {
   const settings = useResponsiveQuality();
   const ready = useSceneStore((s) => s.ready);
@@ -121,12 +136,9 @@ export default function Scene() {
       gl={{ antialias: false, alpha: false, stencil: false, powerPreference: "high-performance", toneMapping: NoToneMapping }}
       onCreated={({ gl }) => {
         gl.setClearColor("#020803", 1);
-        gl.domElement.addEventListener("webglcontextlost", (e) => {
-          e.preventDefault();
-          useSceneStore.getState().setFailed();
-        });
       }}
     >
+      <ContextLossWatcher />
       {ready && <PerformanceMonitor ms={300} iterations={8} threshold={0.75} bounds={() => [40, 58]} onDecline={onDecline} />}
       <World />
     </Canvas>
